@@ -1,6 +1,6 @@
 ﻿namespace Serialization
 {
-    internal class CSVLoader<T> where T : new()
+    internal class CSVDeserializer<T> where T : new()
     {
         /// <summary>
         /// Массив, в котором номер элемента массива - это номер столбца csv файла, а сам элемент массива - это имя свойства класса T
@@ -16,21 +16,19 @@
         /// <param name="Separator">Разделитель столбцов</param>
         /// <param name="WithHeader">есть ли строка с заголовками</param>
         /// <param name="FilePath">Путь к файлу .csv</param>
-        public CSVLoader(string separator, bool withHeader, string filePath) 
+        public CSVDeserializer(string separator, bool withHeader, string filePath) 
         {
             Separator = separator;
             WithHeader = withHeader;
             FilePath = filePath;
-            GetCSVRows();
-            GetPropertyMapper();
         }
 
-        private void GetCSVRows()
+        public void ReadCSVFile()
         {
             CSVRows = File.ReadAllLines(FilePath);
         }
 
-        private void GetPropertyMapper()
+        public void GetPropertyMapper()
         {
             PropertyMapper = new List<string>();
             var objectType = typeof(T);
@@ -60,21 +58,21 @@
                 }
             }
         }
-        public T GetElementFromString(string RowValue)
+        public T GetElementFromString(string rowValue)
         {
             T element = new T();
             var objectType = typeof(T);
             if (PropertyMapper != null && PropertyMapper.Count == objectType.GetProperties().Length)
             {
                 //Для каждого столбца строки CSV
-                for (int i = 0; i < RowValue.Split(Separator).Length; i++)
+                for (int i = 0; i < rowValue.Split(Separator).Length; i++)
                 {
                     //Определяем имя свойства в классе с помощью MapperArray
                     foreach(var Property in objectType.GetProperties())
                     {
                         if (Property.Name == PropertyMapper[i])
                         {
-                            if (Property.PropertyType.Name == typeof(int).Name && int.TryParse(RowValue.Split(Separator)[i], out int result))
+                            if (Property.PropertyType.Name == typeof(int).Name && int.TryParse(rowValue.Split(Separator)[i], out int result))
                             {
                                 Property.SetValue(element, result);
                             }

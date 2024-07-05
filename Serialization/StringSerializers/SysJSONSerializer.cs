@@ -1,8 +1,9 @@
-﻿using System.Text.Json;
+﻿using Serialization.StringSerializers;
+using System.Text.Json;
 
 namespace Serialization.Serializers
 {
-    internal class SysJSONSerializer : IStringSerilization
+    internal class SysJSONSerializer : IStringSerializer
     {
         public string ConvertToString(object Object)
         {

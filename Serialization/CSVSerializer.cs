@@ -1,10 +1,23 @@
 ﻿namespace Serialization
 {
-    internal class CSVSerializer<T> where T : class
+    public class CSVSerializer<T> where T : class
     {
-        internal CSVSerializer(string Separator, bool WithHeader, T[] Objects, string FilePath)
+        internal string Separator {  get; set; }
+        internal bool  WithHeader { get; set; }
+        internal T[] ObjectArray { get; set; }
+        internal string FilePath { get; set; }
+        internal List<string> RowValues { get; set; }
+
+        public CSVSerializer(string separator, bool withHeader, T[] objects, string filePath)
         {
-            var RowValues = new List<string>();
+            Separator = separator;
+            WithHeader = withHeader;
+            ObjectArray = objects;
+            FilePath = filePath;
+        }
+
+        public void Serialize()
+        {
             var objectType = typeof(T);
             if (WithHeader)
             {
@@ -12,7 +25,7 @@
                 string Header = string.Join(Separator, objectType.GetProperties().Select(p => p.Name));
                 RowValues.Add(Header);
             }
-            foreach (var Obj in Objects)
+            foreach (var Obj in ObjectArray)
             {
                 var PropValues = new List<string>();
                 foreach (var Property in objectType.GetProperties())
@@ -22,13 +35,19 @@
                 string Row = string.Join(Separator, PropValues);
                 RowValues.Add(Row);
             }
-            using (var StrW = new StreamWriter(File.OpenWrite(FilePath)))
+        }
+
+        public void Save()
+        {
+            if (FilePath != null)
             {
-                foreach (string RowStr in RowValues)
+                using (var StrW = new StreamWriter(File.OpenWrite(FilePath)))
                 {
-                    StrW.WriteLine(RowStr);
+                    foreach (string RowStr in RowValues)
+                    {
+                        StrW.WriteLine(RowStr);
+                    }
                 }
-                
             }
         }
     }

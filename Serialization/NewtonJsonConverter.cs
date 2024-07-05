@@ -2,7 +2,7 @@
 
 namespace Serialization
 {
-    internal static class JSONconverter<T> where T : new()
+    internal static class NewtonJsonConverter<T> where T : new()
     {
         //CSVNewTonConverter();
         public static string SerializeToJSON(T obj)

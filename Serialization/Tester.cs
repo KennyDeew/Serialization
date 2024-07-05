@@ -1,10 +1,11 @@
 ﻿using Serialization.Serializers;
+using Serialization.StringSerializers;
 
 namespace Serialization
 {
     public class Tester
     {
-        internal void TestConvertToString(IStringSerilization StringConverter, int CountOfConverting)
+        internal void TestConvertToString(IStringSerializer StringConverter, int CountOfConverting)
         {
             for (int i = 0; i < CountOfConverting; i++)
             {

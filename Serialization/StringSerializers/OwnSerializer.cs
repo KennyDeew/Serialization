@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Serialization.StringSerializers;
 namespace Serialization.Serializers
 {
-    internal class OwnSerializer : IStringSerilization
+    internal class OwnSerializer : IStringSerializer
     {
         public string ConvertToString(object Object)
         {
@@ -22,12 +20,5 @@ namespace Serialization.Serializers
                 return $"{{{string.Join(",", PropValues)}}}";
             }
         }
-    }
-
-
-
-    public interface IStringSerilization
-    {
-        string ConvertToString(object obj);
     }
 }
