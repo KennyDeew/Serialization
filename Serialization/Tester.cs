@@ -5,11 +5,11 @@ namespace Serialization
 {
     public class Tester
     {
-        internal void TestConvertToString(IStringSerializer StringConverter, int CountOfConverting)
+        internal void TestConvertToString(IStringSerializer stringConverter, int countOfConverting)
         {
-            for (int i = 0; i < CountOfConverting; i++)
+            for (int i = 0; i < countOfConverting; i++)
             {
-                StringConverter.ConvertToString(new F() { i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5 });
+                stringConverter.ConvertToString(new F() { i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5 });
             }
         }
     }

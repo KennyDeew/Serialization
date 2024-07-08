@@ -14,6 +14,7 @@
             WithHeader = withHeader;
             ObjectArray = objects;
             FilePath = filePath;
+            RowValues = new List<string>();
         }
 
         public void Serialize()

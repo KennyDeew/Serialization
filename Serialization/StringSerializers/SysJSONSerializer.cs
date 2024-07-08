@@ -3,17 +3,17 @@ using System.Text.Json;
 
 namespace Serialization.Serializers
 {
-    internal class SysJSONSerializer : IStringSerializer
+    internal class SysJsonSerializer : IStringSerializer
     {
-        public string ConvertToString(object Object)
+        public string ConvertToString(object obj)
         {
-            if (Object == null)
+            if (obj == null)
             {
                 return "Object is null";
             }
             else
             {
-                return JsonSerializer.Serialize(Object);
+                return JsonSerializer.Serialize(obj);
             }
         }
     }

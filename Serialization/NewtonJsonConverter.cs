@@ -9,9 +9,9 @@ namespace Serialization
         {
             return JsonConvert.SerializeObject(obj);
         }
-        public static T GetElementFromJSON(string ObjValue)
+        public static T GetElementFromJSON(string objValue)
         {
-            return JsonConvert.DeserializeObject<T>(ObjValue);
+            return JsonConvert.DeserializeObject<T>(objValue);
         }
     }
 }

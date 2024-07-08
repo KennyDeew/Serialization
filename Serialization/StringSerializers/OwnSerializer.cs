@@ -3,19 +3,19 @@ namespace Serialization.Serializers
 {
     internal class OwnSerializer : IStringSerializer
     {
-        public string ConvertToString(object Object)
+        public string ConvertToString(object obj)
         {
-            if (Object == null)
+            if (obj == null)
             {
                 return "Object is null";
             }
             else
             {
-                var objectType = Object.GetType();
+                var objectType = obj.GetType();
                 var PropValues = new List<string>();
                 foreach (var property in objectType.GetProperties())
                 {
-                    PropValues.Add($"\"{property.Name}\":{property.GetValue(Object)}");
+                    PropValues.Add($"\"{property.Name}\":{property.GetValue(obj)}");
                 }
                 return $"{{{string.Join(",", PropValues)}}}";
             }

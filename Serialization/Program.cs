@@ -9,26 +9,27 @@ namespace Serialization
         {
             //Количество итераций
             int NumberOfSerilization = 100000;
-            int NumberOfLoading = 100000;
+            int NumberOfLoading = 10000;
             string Separator = ";";
             bool CSVwithHeader = true;
-            string CSVFilePath = "C:\\Users\\Машина\\Documents\\Test1.csv";
-            string JSONFilePath = "C:\\Users\\Машина\\Documents\\Test2.json";
-            TestOwnSerializer(NumberOfSerilization);
+            string SeleFilePath = "C:\\Users\\a\\Documents\\";
+            string CSVFilePath = SeleFilePath + "Test1.csv";
+            string JSONFilePath = SeleFilePath + "Test2.json";
+            //TestOwnSerializer(NumberOfSerilization);
             TestOtherSerializers(NumberOfSerilization);
             TestOwnCSVSerializer(NumberOfLoading, CSVwithHeader, Separator, CSVFilePath);
             TestOwnCSVDeserializer(NumberOfLoading, CSVwithHeader, Separator, CSVFilePath);
-            TestNewTonSoftJSONSerialization(NumberOfLoading, JSONFilePath);
-            TestNewTonSoftLoader(NumberOfLoading, JSONFilePath);
+            TestNewtonSoftJsonSerializer(NumberOfLoading, JSONFilePath);
+            TestNewtonSoftJsonDeSerializer(NumberOfLoading, JSONFilePath);
         }
 
-        private static void TestOwnSerializer(int N)
+        private static void TestOwnSerializer(int number)
         {
             var MySerializer = new OwnSerializer();
             Console.WriteLine($"String result - {MySerializer.ConvertToString(new F() { i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5 })}");
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            for (int i = 0; i < N; i++)
+            for (int i = 0; i < number; i++)
             {
                 new F() { i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5 };
             }
@@ -40,7 +41,7 @@ namespace Serialization
             //Анализ скороски своего сериализатора
             stopwatch.Start();
 
-            Test.TestConvertToString(MySerializer, N);
+            Test.TestConvertToString(MySerializer, number);
 
             stopwatch.Stop();
             Console.WriteLine($"With string serialization: {stopwatch.ElapsedMilliseconds}");
@@ -48,17 +49,17 @@ namespace Serialization
 
         }
 
-        private static void TestOtherSerializers(int N)
+        private static void TestOtherSerializers(int number)
         {
             var MySerializer = new OwnSerializer();
-            var sysJSONSerializer = new SysJSONSerializer();
+            var sysJSONSerializer = new SysJsonSerializer();
             var stopwatch = new Stopwatch();
             Tester Test = new Tester();
 
             //Анализ скороски своего сериализатора
             stopwatch.Start();
 
-            Test.TestConvertToString(MySerializer, N);
+            Test.TestConvertToString(MySerializer, number);
 
             stopwatch.Stop();
             Console.WriteLine($"String serialization (by own Serializer): {stopwatch.ElapsedMilliseconds}");
@@ -67,19 +68,19 @@ namespace Serialization
             //Анализ скороски сериализатора System.Text.Json
             stopwatch.Start();
 
-            Test.TestConvertToString(sysJSONSerializer, N);
+            Test.TestConvertToString(sysJSONSerializer, number);
 
             stopwatch.Stop();
             Console.WriteLine($"String serialization (by System.Text.Json): {stopwatch.ElapsedMilliseconds}");
             stopwatch.Reset();
         }
-        private static void TestOwnCSVSerializer(int Num, bool CSVwithHeader, string Separator, string FilePath)
+        private static void TestOwnCSVSerializer(int number, bool withHeader, string separator, string filePath)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            for (int i = 0; i < Num; i++)
+            for (int i = 0; i < number; i++)
             {
-                CSVSerializer<F> FtoCSV = new CSVSerializer<F>(Separator, CSVwithHeader, new F[] { new F() { i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5 } }, FilePath);
+                CSVSerializer<F> FtoCSV = new CSVSerializer<F>(separator, withHeader, new F[] { new F() { i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5 } }, filePath);
                 FtoCSV.Serialize();
                 FtoCSV.Save();
             }
@@ -87,13 +88,13 @@ namespace Serialization
             Console.WriteLine($"Serialization to CSV (by own Loader): {stopwatch.ElapsedMilliseconds}");
         }
 
-        private static void TestOwnCSVDeserializer(int num, bool cSVwithHeader, string separator, string filePath)
+        private static void TestOwnCSVDeserializer(int number, bool withHeader, string separator, string filePath)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            for (int i = 0; i < num; i++)
+            for (int i = 0; i < number; i++)
             {
-                CSVDeserializer<F> CSVLoader = new CSVDeserializer<F>(separator, cSVwithHeader, filePath);
+                CSVDeserializer<F> CSVLoader = new CSVDeserializer<F>(separator, withHeader, filePath);
                 CSVLoader.ReadCSVFile();
                 CSVLoader.GetPropertyMapper();
                 F[] FromCSVtoFarray = CSVLoader.GetElementArrayFromCSV();
@@ -101,7 +102,7 @@ namespace Serialization
             stopwatch.Stop();
             Console.WriteLine($"Load data from CSV (by own Loader): {stopwatch.ElapsedMilliseconds}");
             //Вывод в консоль полученных данных
-            //CSVLoader<F> CSVLoader = new CSVLoader<F>(separator, cSVwithHeader, filePath);
+            //CSVLoader<F> CSVLoader = new CSVLoader<F>(separator, withHeader, filePath);
             //F[] FromCSVtoFarray = CSVLoader.GetElementArrayFromCSV();
             //var MySerializer = new OwnSerializer();
             //foreach (F f in FromCSVtoFarray)
@@ -110,7 +111,7 @@ namespace Serialization
             //}
         }
 
-        private static void TestNewTonSoftJSONSerialization(int number, string filePath)
+        private static void TestNewtonSoftJsonSerializer(int number, string filePath)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -123,7 +124,7 @@ namespace Serialization
             Console.WriteLine($"Serialization to JSON (by Newtonsoft): {stopwatch.ElapsedMilliseconds}");
         }
 
-        private static void TestNewTonSoftLoader(int numberOfLoading,string filePath)
+        private static void TestNewtonSoftJsonDeSerializer(int numberOfLoading,string filePath)
         {
             var stopwatch = new Stopwatch();
             stopwatch.Start();
